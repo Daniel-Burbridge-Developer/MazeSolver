@@ -43,10 +43,40 @@ class Line:
         canvas.create_line(self.start.x, self.start.y, self.end.x, self.end.y, fill = fill_color, width = 2)
         canvas.pack(fill = BOTH, expand = True)
 
+class Cell:
+    def __init__(self, top_left_point, top_right_point, bottom_left_point, bottom_right_point, _win, window):
+        self.window = window
+
+        self.has_left_wall = True
+        self.has_right_wall = True
+        self.has_top_wall = True
+        self.has_bottom_wall = True
+
+        self.top_left_point = top_left_point
+        self.top_right_point = top_right_point
+        self.bottom_left_point = bottom_left_point
+        self.bottom_right_point = bottom_right_point
+
+    def draw(self):
+        if self.has_left_wall:
+            self.window.draw_line(Line(self.bottom_left_point, self.top_left_point))
+        if self.has_right_wall:
+            self.window.draw_line(Line(self.bottom_right_point, self.top_right_point))
+        if self.has_top_wall:
+            self.window.draw_line(Line(self.top_left_point, self.top_right_point))
+        if self.has_bottom_wall:
+            self.window.draw_line(Line(self.bottom_left_point, self.bottom_right_point))
+
 
 def main():
     win = Window(800, 600)
-    win.draw_line(Line(Point(0, 0), Point(100, 100)), "red")
+
+    cell_one = Cell(Point(10, 10), Point(110, 10), Point(10,110), Point(110, 110), False, win)
+    cell_one.draw()
+    cell_two = Cell(Point(10, 210), Point(110, 210), Point(10, 310), Point(110, 310), False, win)
+    cell_two.draw()
+
+
     win.wait_for_close()
 
 if __name__ == "__main__":
