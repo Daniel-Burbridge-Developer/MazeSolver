@@ -67,14 +67,41 @@ class Cell:
         if self.has_bottom_wall:
             self.window.draw_line(Line(self.bottom_left_point, self.bottom_right_point))
 
+    def draw_move(self, to_cell, undo=False):
+        fill_color = "red"
+        if undo:
+            fill_color = "gray"
+        self.window.draw_line(Line(self.get_middle(), to_cell.get_middle()), fill_color)
+    def get_middle(self):
+        return Point((self.top_left_point.x + self.top_right_point.x) / 2, (self.top_left_point.y + self.bottom_left_point.y) / 2)
+
+class Maze:
+    def __init__(self, x1, y1, num_rows, num_cols,cell_size_x, cell_size_y, win):
+        self.x1 = x1
+        self.y1 = y1
+        self.num_rows = num_rows
+        self.num_cols = num_cols
+        self.cell_size_x = cell_size_x
+        self.cell_size_y = cell_size_y
+        self.win = win
+        self._create_cells()
+    
+    def _create_cells(self):
+        cells = []
+        for row in range(self.num_rows):
+            for col in range(self.num_cols):
+                top_left_point = Point(self.x1 + (col * self.cell_size_x), self.y1 + (row * self.cell_size_y))
+                top_right_point = Point(top_left_point.x + self.cell_size_x, top_left_point.y)
+                bottom_left_point = Point(top_left_point.x, top_left_point.y + self.cell_size_y)
+                bottom_right_point = Point(top_right_point.x, bottom_left_point.y)
+                cells.append(Cell(top_left_point, top_right_point, bottom_left_point, bottom_right_point, False, self.win))
+        for cell in cells:
+            cell.draw()
 
 def main():
     win = Window(800, 600)
-
-    cell_one = Cell(Point(10, 10), Point(110, 10), Point(10,110), Point(110, 110), False, win)
-    cell_one.draw()
-    cell_two = Cell(Point(10, 210), Point(110, 210), Point(10, 310), Point(110, 310), False, win)
-    cell_two.draw()
+    
+    maze = Maze(100, 100, 10, 10, 50, 50, win)
 
 
     win.wait_for_close()
