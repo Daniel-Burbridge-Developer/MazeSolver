@@ -1,9 +1,6 @@
 from tkinter import Tk, BOTH, Canvas
-<<<<<<< HEAD
-=======
 import time
 import random
->>>>>>> development
 
 class Window:
     def __init__ (self, width, height):
@@ -48,12 +45,6 @@ class Line:
         canvas.create_line(self.start.x, self.start.y, self.end.x, self.end.y, fill = fill_color, width = 2)
         canvas.pack(fill = BOTH, expand = True)
 
-<<<<<<< HEAD
-
-def main():
-    win = Window(800, 600)
-    win.draw_line(Line(Point(0, 0), Point(100, 100)), "red")
-=======
 class Cell:
     def __init__(self, top_left_point, top_right_point, bottom_left_point, bottom_right_point, _win, window=None):
         self.window = window
@@ -279,7 +270,6 @@ def main():
  
 
 
->>>>>>> development
     win.wait_for_close()
 
 if __name__ == "__main__":
