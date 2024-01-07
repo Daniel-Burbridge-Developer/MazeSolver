@@ -1,4 +1,5 @@
 from tkinter import Tk, BOTH, Canvas
+import time
 
 class Window:
     def __init__ (self, width, height):
@@ -44,7 +45,7 @@ class Line:
         canvas.pack(fill = BOTH, expand = True)
 
 class Cell:
-    def __init__(self, top_left_point, top_right_point, bottom_left_point, bottom_right_point, _win, window):
+    def __init__(self, top_left_point, top_right_point, bottom_left_point, bottom_right_point, _win, window=None):
         self.window = window
 
         self.has_left_wall = True
@@ -76,7 +77,7 @@ class Cell:
         return Point((self.top_left_point.x + self.top_right_point.x) / 2, (self.top_left_point.y + self.bottom_left_point.y) / 2)
 
 class Maze:
-    def __init__(self, x1, y1, num_rows, num_cols,cell_size_x, cell_size_y, win):
+    def __init__(self, x1, y1, num_rows, num_cols,cell_size_x, cell_size_y, win=None):
         self.x1 = x1
         self.y1 = y1
         self.num_rows = num_rows
@@ -85,7 +86,8 @@ class Maze:
         self.cell_size_y = cell_size_y
         self.win = win
         self._create_cells()
-    
+
+ 
     def _create_cells(self):
         cells = []
         for row in range(self.num_rows):
@@ -95,13 +97,25 @@ class Maze:
                 bottom_left_point = Point(top_left_point.x, top_left_point.y + self.cell_size_y)
                 bottom_right_point = Point(top_right_point.x, bottom_left_point.y)
                 cells.append(Cell(top_left_point, top_right_point, bottom_left_point, bottom_right_point, False, self.win))
+
+        self._draw_cells(cells)
+
+    def _draw_cells(self, cells):
         for cell in cells:
             cell.draw()
 
+        # self._animate()
+            
+    def _animate(self):
+        self.win.redraw()
+        time.sleep(0.05)
+        
 def main():
     win = Window(800, 600)
     
+     
     maze = Maze(100, 100, 10, 10, 50, 50, win)
+ 
 
 
     win.wait_for_close()
